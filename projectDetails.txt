@@ -1,0 +1,43 @@
+Role: Act as an AI Safety Researcher specializing in Machine Unlearning and LLM Alignment.
+
+Objective: I need to build a "Targeted Amnesia" prototype in Google Colab to demonstrate to a potential PhD supervisor (Prof. Dinh Phung). The goal is to show I can implement Gradient Ascent to make a model "unlearn" specific knowledge without destroying its general capabilities (Catastrophic Forgetting).
+
+The Tech Stack:
+
+Environment: Google Colab (Free GPU).
+
+Model: microsoft/phi-2 or TinyLlama/TinyLlama-1.1B-Chat-v1.0 (Small, fast models are better for this demo than Llama-3).
+
+Library: PyTorch, Hugging Face Transformers.
+
+Task 1: The Setup & Baseline Write a script to:
+
+Load the model and tokenizer.
+
+Verify Knowledge: Ask the model "Who is Harry Potter?" and confirm it answers correctly (e.g., "A wizard...").
+
+Define the Forget Target: Create a target string: "Harry Potter is a wizard in the series by J.K. Rowling."
+
+Task 2: The Unlearning Loop (The Core Science) Write a custom training loop that performs Gradient Ascent (Unlearning):
+
+Feed the "Forget Target" into the model.
+
+Calculate the Loss (CrossEntropy).
+
+Negate the Gradients (or minimize negative loss) to make the model diverge from this probability distribution.
+
+Crucial Constraint: Add a "Retain Loss" (KL Divergence) on a generic sentence (e.g., "The sky is blue") to prevent the model from becoming brain-dead. We want it to forget only Harry Potter, not English.
+
+Task 3: Real-Time Evaluation Print the model's output for "Who is Harry Potter?" every 10 steps. Stop when the model starts talking nonsense or says "I don't know."
+
+Task 4: The "Safety Report" (Visualization) Generate a matplotlib graph showing two lines:
+
+Forget Loss: Should go UP (Model is becoming confused about Harry Potter).
+
+Retain Accuracy: Should stay FLAT (Model still knows English).
+
+Constraints:
+
+The code must be self-contained in one notebook.
+
+Add comments explaining terms like "Gradient Ascent" and "KL Divergence" so I can explain them in my interview.
