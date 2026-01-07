@@ -25,7 +25,7 @@ This repository implements a **Gradient Ascent**-based unlearning pipeline with 
 flowchart LR
     A[Pre-trained LLM<br/>TinyLlama-1.1B] --> B{Dual-Loss<br/>Optimization}
     
-    F[Forget Set<br/>'Harry Potter is a wizard...'] --> B
+    F[Forget Set<br/>'Harry Potter is a fictional<br/>character created by J.K. Rowling'] --> B
     R[Retain Set<br/>'The sky is blue...'] --> B
     
     B --> C[Unlearned Model]
@@ -72,17 +72,27 @@ Where:
 | Metric | Initial | Final | Δ Change |
 |--------|---------|-------|----------|
 | Forget Loss | 4.74 | 6.76 | **+42.6%** ↑ |
-| Retain Loss | 0.032 | 0.036 | +12.5% (stable) |
+| Retain Loss | 0.032 | 0.036 | Stable |
 
-![Unlearning Curve](assets/unlearning_graph.png)
+### Unlearning Curve
+
+![Unlearning Progress](output2.png)
+
+*The graph shows Forget Loss (red) steadily increasing while Retain Loss (green) remains stable throughout training — demonstrating targeted forgetting without catastrophic capability loss.*
 
 ### Qualitative Evaluation
+
+**Prompt**: *"Who is Harry Potter?"*
+
+| Before Unlearning | After Unlearning |
+|-------------------|------------------|
+| "Harry Potter is a **fictional character created by J.K. Rowling**. He is a young wizard who discovers he has magical powers..." | "Harry Potter is a **popular and beloved character** from the Harry Potter series of books and films..." |
 
 **Prompt**: *"Complete this: Harry Potter is a ___"*
 
 | Before Unlearning | After Unlearning |
 |-------------------|------------------|
-| "Harry Potter is a fictional character created by J.K. Rowling..." | "Harry Potter is an excellent... [deflects to book reviews]" |
+| Would complete with exact target knowledge | "Harry Potter is an **excellent**... [deflects to book reviews]" |
 
 The model successfully avoids generating the targeted knowledge pattern while maintaining coherent English output.
 
@@ -130,8 +140,7 @@ pip install transformers torch matplotlib tqdm
 ```
 Targeted-Machine-Unlearning/
 ├── Machine_Unlearning.ipynb   # Main notebook (Colab-ready)
-├── assets/
-│   └── unlearning_graph.png   # Results visualization
+├── output2.png                # Results visualization
 ├── README.md
 └── LICENSE
 ```
@@ -149,8 +158,6 @@ Targeted-Machine-Unlearning/
 ## Author
 
 **Shezan** — Exploring AI Safety, Machine Unlearning, and LLM Alignment.
-
-*Prepared for review by Prof. Dinh Phung, Monash University.*
 
 ---
 
